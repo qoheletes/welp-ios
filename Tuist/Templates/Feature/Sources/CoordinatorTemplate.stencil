@@ -1,0 +1,7 @@
+import BaseFeature
+
+
+public final class {{name}}Coordinator: Coordinator {
+  public init() { }
+
+}
