@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "skills": {
+    "architecture-designer": {
+      "source": "Jeffallan/claude-skills",
+      "sourceType": "github",
+      "computedHash": "ab3d2584b772e8d44121426c20eb9c4eaaf9bab47e24a3ef689bc667dc7bb23b"
+    },
+    "code-reviewer": {
+      "source": "Jeffallan/claude-skills",
+      "sourceType": "github",
+      "computedHash": "74fef44bfb03c7ff3d8c366d8ee237621f0c0687aa5868d34d9c06a8ba062109"
+    },
+    "swift-expert": {
+      "source": "Jeffallan/claude-skills",
+      "sourceType": "github",
+      "computedHash": "12da57e9a9c515a5602f842624e694cf922ec395990e8f92c0a3093e165e5c8c"
+    }
+  }
+}
