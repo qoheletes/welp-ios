@@ -23,6 +23,7 @@ let project = Project(
       dependencies: [
         .feature(target: .AskFeature, type: .interface),
         .shared(target: .FeatureFoundation),
+        .shared(target: .DesignSystem),
         .domain(target: .AskDomain, type: .interface),
       ]
     ),
@@ -37,6 +38,13 @@ let project = Project(
       dependencies: [
         .shared(target: .FeatureFoundation)
       ]
+    ),
+  ],
+  schemes: [
+    .scheme(
+      name: "AskFeatureDemo",
+      buildAction: .buildAction(targets: ["AskFeatureDemo"]),
+      runAction: .runAction(executable: "AskFeatureDemo")
     ),
   ]
 )
