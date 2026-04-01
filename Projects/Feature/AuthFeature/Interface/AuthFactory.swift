@@ -1,4 +1,4 @@
 import Foundation
 
 // TODO: Define AuthFactory protocol
-public protocol AuthFactory {}
+public protocol AuthFactory { }

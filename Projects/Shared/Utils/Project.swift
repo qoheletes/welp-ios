@@ -7,7 +7,7 @@ let project = Project(
   targets: [
     .implement(
       module: .shared(.Utils),
-      dependencies: []
+      dependencies: [],
     )
-  ]
+  ],
 )

@@ -86,6 +86,7 @@ playground.xcworkspace
 *.xcarchive
 tmp/
 /build/
+**/build/
 
 .env
 .idea/

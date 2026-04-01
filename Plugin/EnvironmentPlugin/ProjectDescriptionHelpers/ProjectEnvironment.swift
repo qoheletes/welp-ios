@@ -13,7 +13,7 @@ public struct ProjectEnvironment {
 public let environment = ProjectEnvironment(
   name: "Welp",
   organizationName: "com.welp",
-  deploymentTargets: .iOS("17.0"),
+  deploymentTargets: .iOS("18.0"),
   destination: .iOS,
-  baseSetting: [:]
+  baseSetting: [:],
 )

@@ -7,30 +7,24 @@ import Observation
 @MainActor
 final class TextTransitionViewModel {
 
-    // MARK: - State
+  private(set) var inputText = ""
+  private(set) var submittedText = ""
+  private(set) var isSubmitted = false
 
-    private(set) var inputText: String = ""
-    private(set) var submittedText: String = ""
-    private(set) var isSubmitted: Bool = false
+  func updateInputText(_ text: String) {
+    inputText = text
+  }
 
-    // MARK: - Internal setter for TextField binding
+  func submit() {
+    let trimmed = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !trimmed.isEmpty else { return }
+    submittedText = trimmed
+    isSubmitted = true
+  }
 
-    func updateInputText(_ text: String) {
-        inputText = text
-    }
-
-    // MARK: - Public API
-
-    func submit() {
-        let trimmed = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return }
-        submittedText = trimmed
-        isSubmitted = true
-    }
-
-    func reset() {
-        isSubmitted = false
-        inputText = ""
-        submittedText = ""
-    }
+  func reset() {
+    isSubmitted = false
+    inputText = ""
+    submittedText = ""
+  }
 }

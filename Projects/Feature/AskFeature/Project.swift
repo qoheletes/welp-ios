@@ -9,14 +9,14 @@ let project = Project(
       module: .feature(.AskFeature),
       dependencies: [
         .feature(target: .AskFeature)
-      ]
+      ],
     ),
     .tests(
       module: .feature(.AskFeature),
       dependencies: [
         .feature(target: .AskFeature),
         .feature(target: .AskFeature, type: .testing),
-      ]
+      ],
     ),
     .implement(
       module: .feature(.AskFeature),
@@ -25,26 +25,26 @@ let project = Project(
         .shared(target: .FeatureFoundation),
         .shared(target: .DesignSystem),
         .domain(target: .AskDomain, type: .interface),
-      ]
+      ],
     ),
     .testing(
       module: .feature(.AskFeature),
       dependencies: [
         .feature(target: .AskFeature, type: .interface)
-      ]
+      ],
     ),
     .interface(
       module: .feature(.AskFeature),
       dependencies: [
         .shared(target: .FeatureFoundation)
-      ]
+      ],
     ),
   ],
   schemes: [
     .scheme(
       name: "AskFeatureDemo",
       buildAction: .buildAction(targets: ["AskFeatureDemo"]),
-      runAction: .runAction(executable: "AskFeatureDemo")
-    ),
-  ]
+      runAction: .runAction(executable: "AskFeatureDemo"),
+    )
+  ],
 )

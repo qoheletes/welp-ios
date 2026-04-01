@@ -1,5 +1,5 @@
 {
-  "originHash" : "9250471af2f50544e2c718e5dfc0099bae5b493d4889a1bf4bf110d42d9fe938",
+  "originHash" : "f2c0b27e58e993b85616276c8331108b641760e81c9d8d8fbf72dcde63281796",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -8,24 +8,6 @@
       "state" : {
         "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
         "version" : "5.10.2"
-      }
-    },
-    {
-      "identity" : "rive-ios",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/rive-app/rive-ios",
-      "state" : {
-        "revision" : "388cebf85b8fc2258b93f86dd3e26a30fb070fd0",
-        "version" : "6.15.1"
-      }
-    },
-    {
-      "identity" : "rxswift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ReactiveX/RxSwift.git",
-      "state" : {
-        "revision" : "5dd1907d64f0d36f158f61a466bab75067224893",
-        "version" : "6.9.0"
       }
     },
     {

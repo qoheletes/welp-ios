@@ -8,12 +8,9 @@ let project = Project(
     .implement(
       module: .shared(.ThirdPartyLibrary),
       dependencies: [
-        .external(name: "RxSwift", condition: .none),
-        .external(name: "RxCocoa", condition: .none),
         .external(name: "Swinject", condition: .none),
         .external(name: "Alamofire", condition: .none),
-        .external(name: "RiveRuntime", condition: .none),
-      ]
+      ],
     )
-  ]
+  ],
 )

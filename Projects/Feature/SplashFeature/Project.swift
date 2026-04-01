@@ -9,14 +9,14 @@ let project = Project(
       module: .feature(.SplashFeature),
       dependencies: [
         .shared(target: .FeatureFoundation)
-      ]
+      ],
     ),
     .implement(
       module: .feature(.SplashFeature),
       dependencies: [
         .feature(target: .SplashFeature, type: .interface),
         .shared(target: .FeatureFoundation),
-      ]
+      ],
     ),
-  ]
+  ],
 )
