@@ -1,13 +1,9 @@
 import DesignSystem
 import SwiftUI
 
-public struct Mode: Identifiable, Equatable {
-  public let id: String
-  public let name: String
-  public let description: String
-  public let tone: String
-  public let accentColor: Color
+// MARK: - Mode
 
+public struct Mode: Identifiable, Equatable {
   public init(id: String, name: String, description: String, tone: String, accentColor: Color) {
     self.id = id
     self.name = name
@@ -15,6 +11,13 @@ public struct Mode: Identifiable, Equatable {
     self.tone = tone
     self.accentColor = accentColor
   }
+
+  public let id: String
+  public let name: String
+  public let description: String
+  public let tone: String
+  public let accentColor: Color
+
 }
 
 public let allModes: [Mode] = [
@@ -23,28 +26,28 @@ public let allModes: [Mode] = [
     name: "Oracle",
     description: "Mystical clarity",
     tone: "Trust the unknown.",
-    accentColor: .welpTextAccent
+    accentColor: .welpTextAccent,
   ),
   Mode(
     id: "practical",
     name: "Practical",
     description: "Logic-first",
     tone: "What makes sense?",
-    accentColor: .welpTextLight
+    accentColor: .welpTextLight,
   ),
   Mode(
     id: "optimist",
     name: "Optimist",
     description: "Best-case perspective",
     tone: "Why not?",
-    accentColor: .welpYes
+    accentColor: .welpYes,
   ),
   Mode(
     id: "cynic",
     name: "Cynic",
     description: "Reality check",
     tone: "Are you sure?",
-    accentColor: .welpNo
+    accentColor: .welpNo,
   ),
 ]
 

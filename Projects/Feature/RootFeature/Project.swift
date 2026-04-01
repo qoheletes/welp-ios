@@ -9,7 +9,7 @@ let project = Project(
       module: .feature(.RootFeature),
       dependencies: [
         .shared(target: .FeatureFoundation)
-      ]
+      ],
     ),
     .implement(
       module: .feature(.RootFeature),
@@ -21,7 +21,7 @@ let project = Project(
         .feature(target: .ProfileFeature, type: .interface),
         .feature(target: .OnboardingFeature, type: .interface),
         .shared(target: .FeatureFoundation),
-      ]
+      ],
     ),
-  ]
+  ],
 )

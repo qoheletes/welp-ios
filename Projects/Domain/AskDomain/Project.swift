@@ -7,14 +7,14 @@ let project = Project(
   targets: [
     .interface(
       module: .domain(.AskDomain),
-      dependencies: []
+      dependencies: [],
     ),
     .implement(
       module: .domain(.AskDomain),
       dependencies: [
         .domain(target: .AskDomain, type: .interface),
         .core(target: .Networking),
-      ]
+      ],
     ),
-  ]
+  ],
 )

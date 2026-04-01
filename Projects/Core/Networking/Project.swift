@@ -9,7 +9,7 @@ let project = Project(
       module: .core(.Networking),
       dependencies: [
         .shared(target: .ThirdPartyLibrary)
-      ]
+      ],
     )
-  ]
+  ],
 )

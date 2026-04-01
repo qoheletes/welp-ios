@@ -1,4 +1,4 @@
 import Foundation
 
 // TODO: Define AskRepository protocol
-public protocol AskRepository {}
+public protocol AskRepository { }

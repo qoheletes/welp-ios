@@ -1,4 +1,4 @@
 import Foundation
 
 // TODO: Define OnboardingFactory protocol
-public protocol OnboardingFactory {}
+public protocol OnboardingFactory { }

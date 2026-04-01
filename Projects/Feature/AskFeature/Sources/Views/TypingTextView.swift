@@ -1,5 +1,6 @@
-import Shared
+import DesignSystem
 import SwiftUI
+import ThirdPartyLibrary
 
 private let hints: [String] = [
   "not my fault if this answer flops, bestie 💀",

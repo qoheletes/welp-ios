@@ -8,7 +8,7 @@ let project = Project(
     .implement(
       module: .shared(.DesignSystem),
       resources: ["Resources/**"],
-      dependencies: []
+      dependencies: [],
     )
-  ]
+  ],
 )

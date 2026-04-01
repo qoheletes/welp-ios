@@ -3,7 +3,7 @@ import EnvironmentPlugin
 import ProjectDescription
 
 private let infoPlist: [String: Plist.Value] = [
-  "CFBundleDisplayName": "wtd?",
+  "CFBundleDisplayName": "welp",
   "UIUserInterfaceStyle": "Dark",
   "UILaunchScreen": .dictionary([:]),
   "UIAppFonts": .array([
@@ -25,11 +25,11 @@ let project = Project(
       infoPlist: .extendingDefault(with: infoPlist),
       sources: ["Sources/**"],
       resources: ["Resources/**"],
-      dependencies: Module.Feature.allCases.map { .feature(target: $0) },
+      dependencies: Module.Feature.allCases.map { .feature(target: $0) } + [.shared(target: .Utils)],
       settings: .settings(configurations: [
         .debug(name: "Debug"),
         .release(name: "Release"),
-      ])
+      ]),
     )
-  ]
+  ],
 )

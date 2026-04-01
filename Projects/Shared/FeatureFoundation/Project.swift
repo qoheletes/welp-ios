@@ -10,7 +10,7 @@ let project = Project(
       dependencies: [
         .shared(target: .DesignSystem),
         .shared(target: .ThirdPartyLibrary),
-      ]
+      ],
     )
-  ]
+  ],
 )
