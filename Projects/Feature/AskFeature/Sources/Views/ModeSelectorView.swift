@@ -1,5 +1,4 @@
 import SwiftUI
-import ThirdPartyLibrary
 
 // MARK: - ModeSelectorView
 
@@ -12,58 +11,46 @@ public struct ModeSelectorView: View {
   // MARK: Public
 
   public var body: some View {
-    ZStack {
-      Color.welpBg
-        .ignoresSafeArea()
+    ZStack(alignment: .top) {
+      // Paged full-screen carousel
+      TabView(selection: $currentIndex) {
+        ForEach(allModes.indices, id: \.self) { index in
+          ModeFullCard(
+            mode: allModes[index],
+            isSelected: router.selectedMode.id == allModes[index].id,
+            onSelect: { selectAndDismiss(allModes[index]) },
+          )
+          .tag(index)
+        }
+      }
+      .tabViewStyle(.page(indexDisplayMode: .never))
+      .ignoresSafeArea()
 
+      // Fixed overlay: header + subtitle + page dots
       VStack(spacing: 0) {
-        // Header
         header
           .opacity(contentVisible ? 1 : 0)
           .offset(y: contentVisible ? 0 : -20)
 
-        // Subtitle
         Text("Each mode shapes how the answer is framed.")
           .font(.sbAggroLight(13))
           .foregroundStyle(Color.welpTextMuted)
           .multilineTextAlignment(.center)
           .padding(.horizontal, 24)
           .padding(.top, 8)
-          .padding(.bottom, 28)
           .opacity(contentVisible ? 1 : 0)
 
-        // Mode cards — vertical list
-        ScrollView(.vertical, showsIndicators: false) {
-          VStack(spacing: 14) {
-            ForEach(Array(allModes.enumerated()), id: \.element.id) { index, mode in
-              ModeCard(
-                mode: mode,
-                isSelected: router.selectedMode.id == mode.id,
-              ) {
-                withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
-                  router.selectedMode = mode
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                  dismissSelector()
-                }
-              }
-              .opacity(contentVisible ? 1 : 0)
-              .offset(y: contentVisible ? 0 : 40)
-              .animation(
-                .spring(response: 0.5, dampingFraction: 0.8).delay(Double(index) * 0.06),
-                value: contentVisible,
-              )
-            }
-          }
-          .padding(.horizontal, 24)
-        }
+        Spacer()
 
-        Spacer(minLength: 0)
+        modeIndicator
+          .padding(.bottom, 40)
+          .opacity(contentVisible ? 1 : 0)
       }
     }
     .toolbar(.hidden, for: .navigationBar)
     .preferredColorScheme(.dark)
     .onAppear {
+      currentIndex = allModes.firstIndex(where: { $0.id == router.selectedMode.id }) ?? 0
       withAnimation(.spring(response: 0.45, dampingFraction: 0.82)) {
         contentVisible = true
       }
@@ -72,6 +59,7 @@ public struct ModeSelectorView: View {
 
   // MARK: Private
 
+  @State private var currentIndex = 0
   @State private var contentVisible = false
   @Environment(AskRouter.self) private var router
 
@@ -85,7 +73,7 @@ public struct ModeSelectorView: View {
       HStack {
         Spacer()
         Button {
-          dismissSelector()
+          router.pop()
         } label: {
           Text("\u{2715}")
             .font(.sbAggroMedium(14))
@@ -101,9 +89,20 @@ public struct ModeSelectorView: View {
     .padding(.top, 16)
   }
 
-  private func dismissSelector() {
-    withAnimation(.spring(response: 0.45, dampingFraction: 0.82)) {
-      contentVisible = false
+  private var modeIndicator: some View {
+    HStack(spacing: 8) {
+      ForEach(allModes.indices, id: \.self) { i in
+        Capsule()
+          .fill(i == currentIndex ? allModes[i].accentColor : Color.welpBgTrack)
+          .frame(width: i == currentIndex ? 20 : 6, height: 6)
+          .animation(.spring(response: 0.3, dampingFraction: 0.7), value: currentIndex)
+      }
+    }
+  }
+
+  private func selectAndDismiss(_ mode: Mode) {
+    withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
+      router.selectedMode = mode
     }
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
       router.pop()
@@ -111,70 +110,72 @@ public struct ModeSelectorView: View {
   }
 }
 
-// MARK: - ModeCard
+// MARK: - ModeFullCard
 
-private struct ModeCard: View {
+private struct ModeFullCard: View {
+
   let mode: Mode
   let isSelected: Bool
   let onSelect: () -> Void
 
   var body: some View {
-    Button(action: onSelect) {
-      VStack(alignment: .leading, spacing: 10) {
-        HStack {
-          Circle()
-            .fill(mode.accentColor)
-            .frame(width: 10, height: 10)
+    ZStack {
+      Color.welpBg.ignoresSafeArea()
+      mode.accentColor.opacity(0.06).ignoresSafeArea()
 
-          Spacer()
+      VStack(spacing: 0) {
+        Spacer()
 
-          if isSelected {
-            Text("Active")
-              .font(.sbAggroMedium(11))
-              .foregroundStyle(Color.welpTextPrimary)
-              .kerning(0.3)
-              .padding(.horizontal, 10)
-              .padding(.vertical, 4)
-              .background(mode.accentColor)
-              .clipShape(Capsule())
-          }
-        }
+        Circle()
+          .fill(mode.accentColor)
+          .frame(width: 14, height: 14)
+          .padding(.bottom, 20)
 
         Text(mode.name)
-          .font(.sbAggroBold(28))
+          .font(.sbAggroBold(64))
           .foregroundStyle(mode.accentColor)
-          .kerning(-0.8)
+          .kerning(-1.5)
+          .multilineTextAlignment(.center)
+          .padding(.horizontal, 24)
 
         Text(mode.description)
-          .font(.sbAggroMedium(15))
+          .font(.sbAggroMedium(17))
           .foregroundStyle(Color.welpTextSpoken)
+          .multilineTextAlignment(.center)
+          .padding(.horizontal, 40)
+          .padding(.top, 16)
 
         Text("\"\(mode.tone)\"")
-          .font(.sbAggroLight(13))
+          .font(.sbAggroLight(14))
           .italic()
-          .foregroundStyle(Color.welpTextSpoken)
-          .padding(.horizontal, 14)
-          .padding(.vertical, 10)
-          .background(Color.welpBgTrack)
-          .clipShape(RoundedRectangle(cornerRadius: 12))
-          .padding(.top, 4)
+          .foregroundStyle(Color.welpTextMuted)
+          .multilineTextAlignment(.center)
+          .padding(.horizontal, 20)
+          .padding(.vertical, 12)
+          .background(Color.welpBgCardAlt)
+          .clipShape(RoundedRectangle(cornerRadius: 14))
+          .padding(.horizontal, 40)
+          .padding(.top, 20)
+
+        Spacer()
+
+        Button(action: onSelect) {
+          Text(isSelected ? "Active" : "Select")
+            .font(.sbAggroMedium(15))
+            .foregroundStyle(isSelected ? Color.welpBg : mode.accentColor)
+            .padding(.horizontal, 36)
+            .padding(.vertical, 14)
+            .background(isSelected ? mode.accentColor : mode.accentColor.opacity(0.12))
+            .clipShape(Capsule())
+            .overlay(
+              Capsule()
+                .strokeBorder(mode.accentColor.opacity(isSelected ? 0 : 0.4), lineWidth: 1.5)
+            )
+        }
+        .buttonStyle(.plain)
+        .padding(.bottom, 100)
       }
-      .padding(24)
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .background(
-        isSelected
-          ? mode.accentColor.opacity(0.1)
-          : Color.welpBgCardAlt
-      )
-      .clipShape(RoundedRectangle(cornerRadius: 24))
-      .overlay(
-        RoundedRectangle(cornerRadius: 24)
-          .strokeBorder(
-            mode.accentColor.opacity(isSelected ? 1.0 : 0.26),
-            lineWidth: 2,
-          )
-      )
     }
-    .buttonStyle(.plain)
+    .contentShape(Rectangle())
   }
 }
