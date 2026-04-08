@@ -25,7 +25,12 @@ let project = Project(
       infoPlist: .extendingDefault(with: infoPlist),
       sources: ["Sources/**"],
       resources: ["Resources/**"],
-      dependencies: Module.Feature.allCases.map { .feature(target: $0) } + [.shared(target: .Utils)],
+      dependencies: Module.Feature.allCases.map { .feature(target: $0) }
+        + [
+          .shared(target: .Utils),
+          .domain(target: .AskDomain),
+          .feature(target: .AskFeature, type: .testing),
+        ],
       settings: .settings(configurations: [
         .debug(name: "Debug"),
         .release(name: "Release"),

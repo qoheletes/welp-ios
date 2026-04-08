@@ -1,3 +1,4 @@
+import AskDomainInterface
 import DesignSystem
 import SwiftUI
 
@@ -17,10 +18,21 @@ public struct Mode: Identifiable, Equatable {
   public let description: String
   public let tone: String
   public let accentColor: Color
-
 }
 
-public let allModes: [Mode] = [
+extension Mode {
+  init(entity: ModeEntity) {
+    self.init(
+      id: entity.id,
+      name: entity.name,
+      description: entity.description,
+      tone: entity.tone,
+      accentColor: .welpColor(forToken: entity.colorToken),
+    )
+  }
+}
+
+let allModes: [Mode] = [
   Mode(
     id: "oracle",
     name: "Oracle",
@@ -51,4 +63,16 @@ public let allModes: [Mode] = [
   ),
 ]
 
-public let defaultMode = allModes[0]
+let defaultMode = allModes[0]
+
+extension Color {
+  fileprivate static func welpColor(forToken token: String) -> Color {
+    switch token {
+    case "accent": .welpTextAccent
+    case "light": .welpTextLight
+    case "yes": .welpYes
+    case "no": .welpNo
+    default: .welpTextAccent
+    }
+  }
+}

@@ -31,9 +31,7 @@ struct TypingTextView: View {
       .lineSpacing(10)
       .fixedSize(horizontal: false, vertical: true)
       .padding(.horizontal, 28)
-      .onAppear {
-        startTyping()
-      }
+      .onAppear { startTyping() }
       .onDisappear {
         typingTask?.cancel()
         typingTask = nil
@@ -42,7 +40,7 @@ struct TypingTextView: View {
 
   // MARK: Private
 
-  @State private var displayText = ""
+  @State private var displayText = "not my fault if this answer flops, bestie 💀"
   @State private var typingTask: Task<Void, Never>?
 
   private func startTyping() {

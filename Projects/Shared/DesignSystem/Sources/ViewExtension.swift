@@ -2,7 +2,7 @@ import SwiftUI
 
 extension View {
   @ViewBuilder
-  func liquidGlassIfAvaliable() -> some View {
+  public func liquidGlassIfAvailable() -> some View {
     if #available(iOS 26, *) {
       glassEffect()
     } else {
