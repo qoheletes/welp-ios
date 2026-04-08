@@ -1,52 +1,59 @@
+import AskDomainInterface
 import SwiftUI
 
 // MARK: - ResponseViewModel
 
 @Observable
 @MainActor
-final class ResponseViewModel {
+public final class ResponseViewModel: Identifiable {
 
-  // MARK: Internal
+  // MARK: Lifecycle
 
-  enum FetchState: Equatable {
+  public init(useCase: any AskUseCaseProtocol, question: String, modeID: String) {
+    self.useCase = useCase
+    self.question = question
+    self.modeID = modeID
+  }
+
+  // MARK: Public
+
+  public enum FetchState: Equatable {
     case idle
     case loading
     case success(text: String)
     case failure(message: String)
   }
 
-  private(set) var fetchState = FetchState.idle
+  public let id = UUID()
 
-  var responseText: String? {
+  public private(set) var fetchState = FetchState.idle
+
+  public var responseText: String? {
     if case .success(let text) = fetchState { return text }
     return nil
   }
 
-  var isLoading: Bool {
+  public var isLoading: Bool {
     fetchState == .loading
   }
 
-  func fetchResponse() {
+  public func fetchResponse() {
     fetchTask?.cancel()
     fetchState = .loading
 
     fetchTask = Task {
-      // Simulate a 1-second network delay, then return a hardcoded response.
-      // Replace this body with a real service call when integrating the network layer.
       do {
-        try await Task.sleep(nanoseconds: 1_000_000_000)
+        let result = try await useCase.execute(question: question, modeID: modeID)
+        guard !Task.isCancelled else { return }
+        fetchState = .success(text: result.answer)
       } catch {
-        // Task was cancelled — bail out silently.
-        return
+        guard !Task.isCancelled else { return }
+        fetchState = .failure(message: error.localizedDescription)
       }
-
-      guard !Task.isCancelled else { return }
-
-      fetchState = .success(text: "Go for it")
     }
   }
 
-  func reset() {
+  public func reset() {
     fetchTask?.cancel()
     fetchTask = nil
     fetchState = .idle
@@ -54,6 +61,9 @@ final class ResponseViewModel {
 
   // MARK: Private
 
+  private let useCase: any AskUseCaseProtocol
+  private let question: String
+  private let modeID: String
   private var fetchTask: Task<Void, Never>?
 
 }

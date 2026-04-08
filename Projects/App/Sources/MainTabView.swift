@@ -12,17 +12,9 @@ struct MainTabView: View {
     @Bindable var router = router
 
     TabView(selection: $router.selectedTab) {
-      NavigationStack(path: $router.askRouter.path) {
-        AskModule.makeView()
-          .navigationDestination(for: Route.self) { route in
-            switch route {
-            case .modeSelect(let namespace):
-              ModeSelectorView()
-                .navigationTransition(.zoom(sourceID: "modeBackground", in: namespace))
-            }
-          }
+      NavigationStack {
+        AskView(viewModel: router.askViewModel)
       }
-      .environment(router.askRouter)
       .tag(Tab.ask)
       .tabItem {
         Label("Ask", systemImage: "bubble.left.fill")

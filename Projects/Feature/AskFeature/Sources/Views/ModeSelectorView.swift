@@ -6,19 +6,22 @@ public struct ModeSelectorView: View {
 
   // MARK: Lifecycle
 
-  public init() { }
+  public init(viewModel: AskViewModel) {
+    self.viewModel = viewModel
+  }
 
   // MARK: Public
 
   public var body: some View {
     ZStack(alignment: .top) {
+      Color.welpBg.ignoresSafeArea()
       // Paged full-screen carousel
       TabView(selection: $currentIndex) {
-        ForEach(allModes.indices, id: \.self) { index in
+        ForEach(viewModel.modes.indices, id: \.self) { index in
           ModeFullCard(
-            mode: allModes[index],
-            isSelected: router.selectedMode.id == allModes[index].id,
-            onSelect: { selectAndDismiss(allModes[index]) },
+            mode: viewModel.modes[index],
+            isSelected: viewModel.selectedMode.id == viewModel.modes[index].id,
+            onSelect: { selectAndDismiss(viewModel.modes[index]) },
           )
           .tag(index)
         }
@@ -47,10 +50,10 @@ public struct ModeSelectorView: View {
           .opacity(contentVisible ? 1 : 0)
       }
     }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
     .toolbar(.hidden, for: .navigationBar)
-    .preferredColorScheme(.dark)
     .onAppear {
-      currentIndex = allModes.firstIndex(where: { $0.id == router.selectedMode.id }) ?? 0
+      currentIndex = viewModel.modes.firstIndex(where: { $0.id == viewModel.selectedMode.id }) ?? 0
       withAnimation(.spring(response: 0.45, dampingFraction: 0.82)) {
         contentVisible = true
       }
@@ -61,7 +64,9 @@ public struct ModeSelectorView: View {
 
   @State private var currentIndex = 0
   @State private var contentVisible = false
-  @Environment(AskRouter.self) private var router
+  @Environment(\.dismiss) private var dismiss
+
+  private let viewModel: AskViewModel
 
   private var header: some View {
     ZStack {
@@ -73,7 +78,7 @@ public struct ModeSelectorView: View {
       HStack {
         Spacer()
         Button {
-          router.pop()
+          dismiss()
         } label: {
           Text("\u{2715}")
             .font(.sbAggroMedium(14))
@@ -91,9 +96,9 @@ public struct ModeSelectorView: View {
 
   private var modeIndicator: some View {
     HStack(spacing: 8) {
-      ForEach(allModes.indices, id: \.self) { i in
+      ForEach(viewModel.modes.indices, id: \.self) { i in
         Capsule()
-          .fill(i == currentIndex ? allModes[i].accentColor : Color.welpBgTrack)
+          .fill(i == currentIndex ? viewModel.modes[i].accentColor : Color.welpBgTrack)
           .frame(width: i == currentIndex ? 20 : 6, height: 6)
           .animation(.spring(response: 0.3, dampingFraction: 0.7), value: currentIndex)
       }
@@ -101,12 +106,8 @@ public struct ModeSelectorView: View {
   }
 
   private func selectAndDismiss(_ mode: Mode) {
-    withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
-      router.selectedMode = mode
-    }
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-      router.pop()
-    }
+    viewModel.selectedMode = mode
+    dismiss()
   }
 }
 
@@ -166,16 +167,16 @@ private struct ModeFullCard: View {
             .padding(.horizontal, 36)
             .padding(.vertical, 14)
             .background(isSelected ? mode.accentColor : mode.accentColor.opacity(0.12))
-            .clipShape(Capsule())
-            .overlay(
-              Capsule()
-                .strokeBorder(mode.accentColor.opacity(isSelected ? 0 : 0.4), lineWidth: 1.5)
-            )
+            .liquidGlassIfAvailable()
         }
         .buttonStyle(.plain)
         .padding(.bottom, 100)
       }
     }
-    .contentShape(Rectangle())
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
+}
+
+#Preview {
+//  ModeSelectorView()
 }

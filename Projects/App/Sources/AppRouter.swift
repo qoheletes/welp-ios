@@ -1,4 +1,6 @@
+import AskDomain
 import AskFeature
+import AskFeatureTesting
 import AuthFeature
 import FeatureFoundation
 import ProfileFeature
@@ -21,6 +23,10 @@ final class AppRouter {
   var selectedTab = Tab.ask
 
   let askRouter = AskRouter()
+  let askViewModel = AskViewModel(
+    fetchModesUseCase: FetchModesUseCase(repository: MockAskRepository()),
+    askUseCase: MockAskUseCase(),
+  )
   let profileRouter = ProfileRouter()
   let settingsRouter = SettingsRouter()
 

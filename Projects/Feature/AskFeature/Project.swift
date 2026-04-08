@@ -8,7 +8,9 @@ let project = Project(
     .demo(
       module: .feature(.AskFeature),
       dependencies: [
-        .feature(target: .AskFeature)
+        .feature(target: .AskFeature),
+        .feature(target: .AskFeature, type: .testing),
+        .domain(target: .AskDomain),
       ],
     ),
     .tests(
@@ -30,7 +32,9 @@ let project = Project(
     .testing(
       module: .feature(.AskFeature),
       dependencies: [
-        .feature(target: .AskFeature, type: .interface)
+        .feature(target: .AskFeature, type: .interface),
+        .feature(target: .AskFeature),
+        .domain(target: .AskDomain, type: .interface),
       ],
     ),
     .interface(
